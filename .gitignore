@@ -3,3 +3,4 @@
 *.log
 *.spec
 win/build/
+linux/build/
