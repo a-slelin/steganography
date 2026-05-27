@@ -64,7 +64,6 @@ from PyQt5.QtWidgets import (
 from PyQt5.QtGui import QPixmap, QImage, QFont, QPalette, QColor
 from PyQt5.QtCore import Qt, QSize
 
-
 # =============================================================================
 #  Глобальная таблица стилей (Qt Style Sheets / QSS)
 #  Определяет внешний вид всех виджетов приложения в едином тёмном стиле.
@@ -368,12 +367,12 @@ class SteganoWindow(QMainWindow):
 
         # ── Настройки окна ───────────────────────────────────────────────────
         self.setWindowTitle("🔐 PNG Стеганография | LSB метод | PLTE чанк")
-        self.setGeometry(100, 80, 1280, 860)   # x, y, ширина, высота
-        self.setMinimumSize(1060, 700)          # Минимальный допустимый размер
+        self.setGeometry(100, 80, 1280, 860)  # x, y, ширина, высота
+        self.setMinimumSize(1060, 700)  # Минимальный допустимый размер
 
         # ── Переменные состояния ─────────────────────────────────────────────
         self.original_image: Optional[QImage] = None  # Исходное палитровое изображение
-        self.stego_image:    Optional[QImage] = None  # Изображение со встроенным сообщением
+        self.stego_image: Optional[QImage] = None  # Изображение со встроенным сообщением
 
         # ── Применение глобальной таблицы стилей QSS ────────────────────────
         self.setStyleSheet(APP_STYLE)
@@ -430,15 +429,15 @@ class SteganoWindow(QMainWindow):
         # ── 2. Ряд с двумя изображениями (исходное | стего) ─────────────────
         img_row = QHBoxLayout()
         img_row.setSpacing(12)
-        img_row.addWidget(self._make_original_group())   # Левая панель
-        img_row.addWidget(self._make_stego_group())      # Правая панель
-        root.addLayout(img_row, stretch=3)               # stretch=3 — изображения занимают основное пространство
+        img_row.addWidget(self._make_original_group())  # Левая панель
+        img_row.addWidget(self._make_stego_group())  # Правая панель
+        root.addLayout(img_row, stretch=3)  # stretch=3 — изображения занимают основное пространство
 
         # ── 3. Ряд с текстовыми полями (ввод | вывод) ───────────────────────
         msg_row = QHBoxLayout()
         msg_row.setSpacing(12)
-        msg_row.addWidget(self._make_input_group())      # Поле ввода сообщения
-        msg_row.addWidget(self._make_output_group())     # Поле извлечённого сообщения
+        msg_row.addWidget(self._make_input_group())  # Поле ввода сообщения
+        msg_row.addWidget(self._make_output_group())  # Поле извлечённого сообщения
         root.addLayout(msg_row, stretch=1)
 
         # ── 4. Ряд кнопок действий ───────────────────────────────────────────
@@ -634,7 +633,7 @@ class SteganoWindow(QMainWindow):
         )
         self.extracted_output.setMinimumHeight(90)
         self.extracted_output.setMaximumHeight(130)
-        self.extracted_output.setReadOnly(True)   # Запрет редактирования выходного поля
+        self.extracted_output.setReadOnly(True)  # Запрет редактирования выходного поля
         vbox.addWidget(self.extracted_output)
 
         return group
@@ -695,11 +694,11 @@ class SteganoWindow(QMainWindow):
         - «Извлечь»    — активна, если есть хоть какое-то изображение для анализа.
         """
         has_original = self.original_image is not None
-        has_stego    = self.stego_image    is not None
+        has_stego = self.stego_image is not None
 
-        self.btn_save.setEnabled(has_stego)                          # Нечего сохранять без стего
-        self.btn_embed.setEnabled(has_original)                      # Нечего встраивать без оригинала
-        self.btn_extract.setEnabled(has_original or has_stego)       # Нужно хоть какое-то изображение
+        self.btn_save.setEnabled(has_stego)  # Нечего сохранять без стего
+        self.btn_embed.setEnabled(has_original)  # Нечего встраивать без оригинала
+        self.btn_extract.setEnabled(has_original or has_stego)  # Нужно хоть какое-то изображение
 
     # ─────────────────────────────────────────────────────────────────────────
     #  ОПЕРАЦИЯ 1: Загрузка изображения
@@ -726,9 +725,9 @@ class SteganoWindow(QMainWindow):
         """
         # Открываем диалог выбора файла с фильтром по расширению
         file_path, _ = QFileDialog.getOpenFileName(
-            self,                                   # Родительский виджет
-            "Открыть PNG-изображение",              # Заголовок диалога
-            "",                                     # Начальная директория (текущая)
+            self,  # Родительский виджет
+            "Открыть PNG-изображение",  # Заголовок диалога
+            "",  # Начальная директория (текущая)
             "PNG-изображения (*.png);;Все файлы (*.*)"
         )
 
@@ -769,7 +768,7 @@ class SteganoWindow(QMainWindow):
 
         # ── Сохраняем состояние и обновляем интерфейс ─────────────────────────
         self.original_image = img
-        self.stego_image    = None  # Сбрасываем старое стего-изображение
+        self.stego_image = None  # Сбрасываем старое стего-изображение
 
         # Отображаем оригинал в левой панели
         self._show_image(self.original_label, self.original_image)
@@ -817,7 +816,7 @@ class SteganoWindow(QMainWindow):
         file_path, _ = QFileDialog.getSaveFileName(
             self,
             "Сохранить стего-изображение",
-            "stego_image.png",          # Имя по умолчанию
+            "stego_image.png",  # Имя по умолчанию
             "PNG-изображения (*.png)"
         )
 
@@ -902,8 +901,8 @@ class SteganoWindow(QMainWindow):
 
         # ── Создаём рабочую копию изображения ────────────────────────────────
         # copy() создаёт глубокую копию; оригинал self.original_image остаётся нетронутым
-        img    = self.original_image.copy()
-        colors = img.colorTable()   # list[int] — палитра в формате QRgb (0xAARRGGBB)
+        img = self.original_image.copy()
+        colors = img.colorTable()  # list[int] — палитра в формате QRgb (0xAARRGGBB)
 
         if not colors:
             QMessageBox.critical(self, "❌  Ошибка", "Изображение не содержит палитры (PLTE).")
@@ -911,7 +910,7 @@ class SteganoWindow(QMainWindow):
 
         # ── Кодируем сообщение в байты UTF-8 ──────────────────────────────────
         msg_bytes = message.encode('utf-8')
-        length    = len(msg_bytes)
+        length = len(msg_bytes)
 
         # Проверка: длина должна помещаться в uint16 (0..65535)
         if length > 65535:
@@ -924,8 +923,8 @@ class SteganoWindow(QMainWindow):
 
         # ── Проверка ёмкости палитры ───────────────────────────────────────────
         # Каждый цвет палитры даёт 3 бита (по одному на R, G, B канал)
-        max_bits    = len(colors) * 3        # Максимум бит, доступных для встраивания
-        needed_bits = (2 + length) * 8      # 2 байта заголовка + N байт сообщения
+        max_bits = len(colors) * 3  # Максимум бит, доступных для встраивания
+        needed_bits = (2 + length) * 8  # 2 байта заголовка + N байт сообщения
 
         if needed_bits > max_bits:
             # Вычисляем, сколько текста (ASCII) вмещается
@@ -942,10 +941,10 @@ class SteganoWindow(QMainWindow):
         # ── Формируем байтовый поток данных ───────────────────────────────────
         data = bytearray()
         data.extend(struct.pack('>H', length))  # 2 байта: длина сообщения (big-endian uint16)
-        data.extend(msg_bytes)                  # N байт: само сообщение в кодировке UTF-8
+        data.extend(msg_bytes)  # N байт: само сообщение в кодировке UTF-8
 
         # ── LSB-встраивание: заменяем младший бит каждого байта RGB ───────────
-        bit_index  = 0              # Текущая позиция в общем битовом потоке
+        bit_index = 0  # Текущая позиция в общем битовом потоке
         total_bits = len(data) * 8  # Суммарное число битов для встраивания
 
         for i in range(len(colors)):
@@ -958,29 +957,29 @@ class SteganoWindow(QMainWindow):
             # ── Красный канал ────────────────────────────────────────────────
             if bit_index < total_bits:
                 # Определяем, из какого байта и с какой позиции берём бит
-                byte_idx    = bit_index // 8           # Индекс байта в массиве data
-                bit_in_byte = 7 - (bit_index % 8)     # Смещение бита (7=MSB, 0=LSB)
-                bit         = (data[byte_idx] >> bit_in_byte) & 1  # Извлекаемый бит (0 или 1)
+                byte_idx = bit_index // 8  # Индекс байта в массиве data
+                bit_in_byte = 7 - (bit_index % 8)  # Смещение бита (7=MSB, 0=LSB)
+                bit = (data[byte_idx] >> bit_in_byte) & 1  # Извлекаемый бит (0 или 1)
 
-                r = (r & 0xFE) | bit   # Обнуляем LSB красного и устанавливаем нужный бит
+                r = (r & 0xFE) | bit  # Обнуляем LSB красного и устанавливаем нужный бит
                 bit_index += 1
 
             # ── Зелёный канал ────────────────────────────────────────────────
             if bit_index < total_bits:
-                byte_idx    = bit_index // 8
+                byte_idx = bit_index // 8
                 bit_in_byte = 7 - (bit_index % 8)
-                bit         = (data[byte_idx] >> bit_in_byte) & 1
+                bit = (data[byte_idx] >> bit_in_byte) & 1
 
-                g = (g & 0xFE) | bit   # Обнуляем LSB зелёного и устанавливаем нужный бит
+                g = (g & 0xFE) | bit  # Обнуляем LSB зелёного и устанавливаем нужный бит
                 bit_index += 1
 
             # ── Синий канал ──────────────────────────────────────────────────
             if bit_index < total_bits:
-                byte_idx    = bit_index // 8
+                byte_idx = bit_index // 8
                 bit_in_byte = 7 - (bit_index % 8)
-                bit         = (data[byte_idx] >> bit_in_byte) & 1
+                bit = (data[byte_idx] >> bit_in_byte) & 1
 
-                b = (b & 0xFE) | bit   # Обнуляем LSB синего и устанавливаем нужный бит
+                b = (b & 0xFE) | bit  # Обнуляем LSB синего и устанавливаем нужный бит
                 bit_index += 1
 
             # Записываем изменённый цвет обратно в список палитры
@@ -991,14 +990,14 @@ class SteganoWindow(QMainWindow):
                 break
 
         # ── Применяем изменённую палитру к изображению ────────────────────────
-        img.setColorTable(colors)   # Устанавливаем новую палитру; данные пикселей не меняются
-        self.stego_image = img      # Сохраняем результат
+        img.setColorTable(colors)  # Устанавливаем новую палитру; данные пикселей не меняются
+        self.stego_image = img  # Сохраняем результат
 
         # ── Отображаем стего-изображение в правой панели ─────────────────────
         self._show_image(self.stego_label, self.stego_image)
 
         # ── Обновляем UI и информируем пользователя ───────────────────────────
-        colors_used = (bit_index + 2) // 3   # Приблизительное число изменённых цветов
+        colors_used = (bit_index + 2) // 3  # Приблизительное число изменённых цветов
         self.statusBar().showMessage(
             f"🔒  Встроено {length} байт текста. "
             f"Задействовано {bit_index} бит в ~{colors_used} цветах палитры "
@@ -1049,10 +1048,10 @@ class SteganoWindow(QMainWindow):
         # ── Выбираем изображение для анализа ─────────────────────────────────
         # Приоритет: только что созданное стего > загруженное из файла (оригинал)
         if self.stego_image is not None:
-            img         = self.stego_image
+            img = self.stego_image
             source_name = "текущего стего-изображения"
         elif self.original_image is not None:
-            img         = self.original_image
+            img = self.original_image
             source_name = "загруженного изображения"
         else:
             QMessageBox.warning(
@@ -1084,15 +1083,15 @@ class SteganoWindow(QMainWindow):
             g = qGreen(colors[i])
             b = qBlue(colors[i])
 
-            bits.append(r & 1)   # Младший бит красного канала i-го цвета
-            bits.append(g & 1)   # Младший бит зелёного канала i-го цвета
-            bits.append(b & 1)   # Младший бит синего канала i-го цвета
+            bits.append(r & 1)  # Младший бит красного канала i-го цвета
+            bits.append(g & 1)  # Младший бит зелёного канала i-го цвета
+            bits.append(b & 1)  # Младший бит синего канала i-го цвета
 
         # ── Конвертируем битовый поток в байты (MSB первым) ──────────────────
         data_bytes = bytearray()
         for i in range(0, len(bits), 8):
             if i + 8 > len(bits):
-                break   # Пропускаем неполный байт в конце
+                break  # Пропускаем неполный байт в конце
 
             byte_val = 0
             for j in range(8):
@@ -1136,7 +1135,7 @@ class SteganoWindow(QMainWindow):
             return
 
         # ── Декодируем байты сообщения из UTF-8 ──────────────────────────────
-        msg_bytes = data_bytes[2:2 + length]   # Срез: пропускаем 2-байтный заголовок
+        msg_bytes = data_bytes[2:2 + length]  # Срез: пропускаем 2-байтный заголовок
         try:
             message = msg_bytes.decode('utf-8')
         except UnicodeDecodeError:
