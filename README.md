@@ -41,6 +41,12 @@
 Необходимо установить некоторые [📚 библиотеки](requirements.txt) с помощью **pip** версии **26.1.1**:
 
 ```shell
+# Клонируем репозиторий проекта
+git clone https://github.com/a-slelin/steganography.git;
+
+# Переходим в папку проекта
+cd steganography; 
+
 # Создаём виртуальное окружение
 python -m venv .venv;
 
@@ -61,7 +67,7 @@ pip install -r requirements.txt;
 
 # Иногда для корректного запуска необходимо
 # указать временную переменную на плагины Qt5
-$env:QT_QPA_PLATFORM_PLUGIN_PATH = "<путь к проекту>\.venv\Lib\site-packages\PyQt5\Qt5\plugins"
+# $env:QT_QPA_PLATFORM_PLUGIN_PATH = "<путь к проекту>\.venv\Lib\site-packages\PyQt5\Qt5\plugins"
 
 # Запускаем десктопное приложение
 python main.py;
@@ -106,6 +112,34 @@ rm -f Steganography.spec
 # Запускаем бинарный файл
 ./linux/Steganography;
 ```
+
+## Тестирование 📊
+
+Для проведения автоматизированных тестов необходимо сделать следующее:
+
+```shell
+# Запускаем все тесты на исполнение
+pytest tests.py -v;
+
+# Запуск только одной группы тестов (по маркеру):
+pytest tests.py -v -m unit;
+pytest tests.py -v -m ui;
+pytest tests.py -v -m integration;
+pytest tests.py -v -m edge_cases;
+pytest tests.py -v -m performance;
+    
+# Создаём HTML-отчёт с подробными результатами
+pytest tests.py --html=html-report.html --self-contained-html;
+
+# Создаём отчёт о покрытии кода
+pytest tests.py --cov=. --cov-report=html --cov-report=term;
+```
+
+HTML-отчёт тестирования можно посмотреть [**тут**](test/html-report.html), а [**здесь**](test/htmlcov/index.html) можно
+посмотреть отчёт о покрытии кода тестами (открывается в любом доступном браузере).
+
+Также в проекте приведён [**.md**](test/report.md) и [**.pdf**](test/report.pdf) файлы с подробным отчётом о проведенном
+тестировании.
 
 ## Версии 🔖
 
