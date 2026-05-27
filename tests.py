@@ -8,19 +8,6 @@
     приложения стеганографии (main.py) с использованием фреймворка pytest
     и плагина pytest-qt для тестирования PyQt5-интерфейса.
 
-Запуск всех тестов:
-    pytest tests.py -v
-
-Запуск с подробным выводом и прогрессом:
-    pytest tests.py -v --tb=short
-
-Запуск только одной группы тестов (по маркеру):
-    pytest tests.py -v -m unit
-    pytest tests.py -v -m ui
-    pytest tests.py -v -m integration
-    pytest tests.py -v -m edge_cases
-    pytest tests.py -v -m performance
-
 Структура тестов:
     ┌──────────────────────────────────────────────────────────────────────┐
     │  Группа 1: Вспомогательные функции (qRed/qGreen/qBlue/qRgb)          │
@@ -42,18 +29,22 @@ import os
 import sys
 import struct
 import time
+# noinspection PyUnusedImports
 import tempfile
+# noinspection PyUnusedImports
 from unittest.mock import patch, MagicMock
 from typing import List
 
 import pytest
 
 # Добавляем директорию с main.py в путь импорта.
-# Предполагается, что tests.py лежит рядом с main.py.
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
+# noinspection PyPackageRequirements
 from PyQt5.QtWidgets import QApplication, QMessageBox, QFileDialog
+# noinspection PyPackageRequirements
 from PyQt5.QtGui import QImage
+# noinspection PyUnusedImports,PyPackageRequirements
 from PyQt5.QtCore import Qt
 
 # Импортируем всё из main.py
@@ -527,6 +518,7 @@ class TestLSBAlgorithmCore:
 #  ГРУППА 3: Тесты инициализации и структуры интерфейса
 # =============================================================================
 
+# noinspection PyUnresolvedReferences
 @pytest.mark.ui
 class TestUIInitialization:
     """Тесты начального состояния главного окна при запуске."""
@@ -692,10 +684,12 @@ class TestButtonStates:
 #  ГРУППА 5: Тесты встраивания сообщений (embed_message через UI)
 # =============================================================================
 
+# noinspection PyUnresolvedReferences
 @pytest.mark.ui
 class TestEmbedMessage:
     """Тесты метода SteganoWindow.embed_message()."""
 
+    # noinspection PyMethodMayBeStatic
     def _setup_image(self, window, img):
         """Установить исходное изображение в окно."""
         window.original_image = img
@@ -822,10 +816,12 @@ class TestEmbedMessage:
 #  ГРУППА 6: Тесты извлечения сообщений (extract_message через UI)
 # =============================================================================
 
+# noinspection PyUnresolvedReferences
 @pytest.mark.ui
 class TestExtractMessage:
     """Тесты метода SteganoWindow.extract_message()."""
 
+    # noinspection PyMethodMayBeStatic
     def _embed_and_prepare(self, window, img, message):
         """Подготовить окно: установить изображение и встроить сообщение."""
         window.original_image = img
@@ -889,10 +885,12 @@ class TestExtractMessage:
 #  ГРУППА 7: Интеграционные тесты полного цикла (embed → extract)
 # =============================================================================
 
+# noinspection PyUnresolvedReferences
 @pytest.mark.integration
 class TestFullEmbedExtractCycle:
     """Сквозные тесты: встраивание сообщения и последующее его извлечение."""
 
+    # noinspection PyMethodMayBeStatic
     def _full_cycle(self, window, img, message):
         """Выполнить полный цикл embed → extract и вернуть извлечённый текст."""
         window.original_image = img
@@ -945,6 +943,7 @@ class TestFullEmbedExtractCycle:
         window.stego_image.save(stego_path, "PNG")
 
         # Загружаем обратно в новое окно
+        # noinspection PyUnusedImports,PyPackageRequirements
         from PyQt5.QtWidgets import QApplication
         win2 = SteganoWindow()
         loaded = QImage(stego_path)
@@ -996,6 +995,7 @@ class TestFullEmbedExtractCycle:
 #  ГРУППА 8: Тесты загрузки и сохранения файлов
 # =============================================================================
 
+# noinspection PyUnresolvedReferences
 @pytest.mark.integration
 class TestFileOperations:
     """Тесты операций с файловой системой: загрузка и сохранение PNG."""
@@ -1161,6 +1161,7 @@ class TestEdgeCases:
         # Все LSB = 0 → length = 0
         clean = [qRgb(0xFE & qRed(c), 0xFE & qGreen(c), 0xFE & qBlue(c))
                  for c in palette_256]
+        # noinspection PyBroadException
         try:
             result = lsb_extract_raw(clean)
             assert result == ""
@@ -1188,6 +1189,7 @@ class TestEdgeCases:
 
     def test_lsb_bit_flip_is_minimal(self):
         """Изменение LSB не влияет на старшие биты: разница не превышает 1."""
+        # noinspection PyUnusedLocal
         palette = [qRgb(128, 128, 128)]
         modified = lsb_embed_raw([qRgb(128, 128, 128)] + [qRgb(0, 0, 0)] * 100,
                                  "X")
@@ -1262,13 +1264,13 @@ class TestErrorHandling:
         for i in range(len(colors)):
             r, g, b = qRed(colors[i]), qGreen(colors[i]), qBlue(colors[i])
             if bit_idx < len(bits):
-                r = (r & 0xFE) | bits[bit_idx];
+                r = (r & 0xFE) | bits[bit_idx]
                 bit_idx += 1
             if bit_idx < len(bits):
-                g = (g & 0xFE) | bits[bit_idx];
+                g = (g & 0xFE) | bits[bit_idx]
                 bit_idx += 1
             if bit_idx < len(bits):
-                b = (b & 0xFE) | bits[bit_idx];
+                b = (b & 0xFE) | bits[bit_idx]
                 bit_idx += 1
             colors[i] = qRgb(r, g, b)
             if bit_idx >= len(bits):
@@ -1439,8 +1441,8 @@ class TestPerformance:
         start = time.perf_counter()
         for _ in range(10_000):
             for c in colors:
-                qRed(c);
-                qGreen(c);
+                qRed(c)
+                qGreen(c)
                 qBlue(c)
         elapsed_ms = (time.perf_counter() - start) * 1000
         assert elapsed_ms < 500, f"Разбор цвета заняло {elapsed_ms:.1f} мс (> 500 мс)"
