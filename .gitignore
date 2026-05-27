@@ -1,6 +1,6 @@
 *.venv/
 *.idea/
+*__pycache__/
 *.log
 *.spec
-win/build/
-linux/build/
+*build/
