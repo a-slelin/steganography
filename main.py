@@ -79,18 +79,18 @@ QMainWindow, QWidget#central_widget {
 /* ── Шапка приложения ────────────────────────────────────────────────────── */
 QLabel#lbl_title {
     color: #cdd6f4;
-    font-size: 20px;
+    font-size: 26px;
     font-weight: bold;
     font-family: 'Segoe UI', 'Arial', sans-serif;
-    padding: 6px 0px 0px 0px;
+    padding: 8px 0px 0px 0px;
     letter-spacing: 0.5px;
 }
 
 QLabel#lbl_subtitle {
     color: #a6adc8;
-    font-size: 11px;
+    font-size: 14px;
     font-family: 'Segoe UI', 'Arial', sans-serif;
-    padding-bottom: 4px;
+    padding-bottom: 6px;
 }
 
 /* ── Виджет-шапка (фон градиентом через объект) ──────────────────────────── */
@@ -105,23 +105,23 @@ QGroupBox {
     background-color: #313244;
     border: 1px solid #45475a;
     border-radius: 10px;
-    margin-top: 14px;
-    font-size: 11px;
+    margin-top: 20px;
+    font-size: 14px;
     font-weight: bold;
     color: #cdd6f4;
     font-family: 'Segoe UI', 'Arial', sans-serif;
-    padding: 6px 8px 8px 8px;
+    padding: 8px 10px 10px 10px;
 }
 
 QGroupBox::title {
     subcontrol-origin: margin;
     subcontrol-position: top left;
-    padding: 2px 10px 2px 10px;
-    left: 10px;
+    padding: 4px 12px 4px 12px;
+    left: 12px;
     color: #89b4fa;
     background-color: #1e1e2e;
-    border-radius: 5px;
-    font-size: 11px;
+    border-radius: 6px;
+    font-size: 14px;
 }
 
 /* ── Лейблы для отображения изображений ─────────────────────────────────── */
@@ -130,7 +130,7 @@ QLabel#lbl_image {
     border: 2px dashed #45475a;
     border-radius: 8px;
     color: #585b70;
-    font-size: 11px;
+    font-size: 14px;
     font-family: 'Segoe UI', 'Arial', sans-serif;
     qproperty-alignment: AlignCenter;
 }
@@ -145,12 +145,12 @@ QPushButton {
     color: #1e1e2e;
     border: none;
     border-radius: 8px;
-    padding: 8px 20px;
-    font-size: 11px;
+    padding: 10px 24px;
+    font-size: 14px;
     font-weight: bold;
     font-family: 'Segoe UI', 'Arial', sans-serif;
-    min-width: 160px;
-    min-height: 36px;
+    min-width: 180px;
+    min-height: 44px;
 }
 
 QPushButton:hover {
@@ -198,8 +198,8 @@ QTextEdit {
     color: #cdd6f4;
     border: 1px solid #45475a;
     border-radius: 8px;
-    padding: 6px 8px;
-    font-size: 11px;
+    padding: 8px 10px;
+    font-size: 14px;
     font-family: 'Consolas', 'Courier New', monospace;
     selection-background-color: #89b4fa;
     selection-color: #1e1e2e;
@@ -228,11 +228,11 @@ QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical { height: 0px; }
 QStatusBar {
     background-color: #181825;
     color: #a6adc8;
-    font-size: 10px;
+    font-size: 13px;
     font-family: 'Segoe UI', 'Arial', sans-serif;
     border-top: 1px solid #313244;
-    padding: 2px 8px;
-    min-height: 22px;
+    padding: 3px 10px;
+    min-height: 26px;
 }
 
 /* ── Горизонтальный разделитель ──────────────────────────────────────────── */
@@ -368,8 +368,8 @@ class SteganoWindow(QMainWindow):
 
         # ── Настройки окна ───────────────────────────────────────────────────
         self.setWindowTitle("🔐 PNG Стеганография | LSB метод | PLTE чанк")
-        self.setGeometry(100, 80, 1140, 780)   # x, y, ширина, высота
-        self.setMinimumSize(920, 640)          # Минимальный допустимый размер
+        self.setGeometry(100, 80, 1280, 860)   # x, y, ширина, высота
+        self.setMinimumSize(1060, 700)          # Минимальный допустимый размер
 
         # ── Переменные состояния ─────────────────────────────────────────────
         self.original_image: Optional[QImage] = None  # Исходное палитровое изображение
@@ -587,7 +587,7 @@ class SteganoWindow(QMainWindow):
 
         # Подсказка под заголовком группы
         hint = QLabel("Введите текст, который будет скрыт в палитре PNG:")
-        hint.setStyleSheet("color: #a6adc8; font-size: 10px;")
+        hint.setStyleSheet("color: #a6adc8; font-size: 13px;")
         vbox.addWidget(hint)
 
         # Текстовое поле ввода (редактируемое)
@@ -621,7 +621,7 @@ class SteganoWindow(QMainWindow):
 
         # Подсказка под заголовком группы
         hint = QLabel("Скрытый текст, извлечённый из палитры PLTE:")
-        hint.setStyleSheet("color: #a6adc8; font-size: 10px;")
+        hint.setStyleSheet("color: #a6adc8; font-size: 13px;")
         vbox.addWidget(hint)
 
         # Текстовое поле вывода (только для чтения)
@@ -657,7 +657,7 @@ class SteganoWindow(QMainWindow):
         # ── Кнопка встраивания сообщения ────────────────────────────────────
         self.btn_embed = QPushButton("🔒  Встроить сообщение в палитру")
         self.btn_embed.setObjectName("btn_embed")
-        self.btn_embed.setMinimumWidth(240)
+        self.btn_embed.setMinimumWidth(280)
         self.btn_embed.setToolTip(
             "Встроить текст из поля ввода в LSB-биты RGB-компонентов\n"
             "палитры (PLTE чанк) исходного изображения.\n"
@@ -669,7 +669,7 @@ class SteganoWindow(QMainWindow):
         # ── Кнопка извлечения сообщения ─────────────────────────────────────
         self.btn_extract = QPushButton("🔓  Извлечь сообщение из палитры")
         self.btn_extract.setObjectName("btn_extract")
-        self.btn_extract.setMinimumWidth(240)
+        self.btn_extract.setMinimumWidth(280)
         self.btn_extract.setToolTip(
             "Считать LSB-биты из палитры (PLTE чанк) изображения\n"
             "и восстановить скрытое сообщение.\n"
@@ -1211,7 +1211,7 @@ def main() -> None:
     app.setApplicationVersion("1.0")
 
     # Устанавливаем глобальный шрифт для всех виджетов
-    font = QFont("Segoe UI", 10)
+    font = QFont("Segoe UI", 13)
     font.setStyleHint(QFont.SansSerif)
     app.setFont(font)
 
